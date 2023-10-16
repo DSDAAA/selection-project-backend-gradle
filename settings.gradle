@@ -1,0 +1,9 @@
+rootProject.name = 'selection-project-backend'
+include 'common'
+include 'manager'
+include 'model'
+include 'common:service'
+findProject(':common:service')?.name = 'service'
+include 'common:util'
+findProject(':common:util')?.name = 'util'
+
