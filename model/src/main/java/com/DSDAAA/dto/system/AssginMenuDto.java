@@ -6,6 +6,7 @@ import lombok.Data;
 import java.util.List;
 import java.util.Map;
 
+@Data
 @Schema(description = "请求参数实体类")
 public class AssginMenuDto {
 
@@ -15,19 +16,4 @@ public class AssginMenuDto {
     @Schema(description = "选中的菜单id的集合")
     private List<Map<String , Number>> menuIdList;	// 选中的菜单id的集合; Map的键表示菜单的id，值表示是否为半开; 0否，1是
 
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
-
-    public List<Map<String, Number>> getMenuIdList() {
-        return menuIdList;
-    }
-
-    public void setMenuIdList(List<Map<String, Number>> menuIdList) {
-        this.menuIdList = menuIdList;
-    }
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.util.List;
 
+@Data
 @Schema(description = "请求参数实体类")
 public class AssginRoleDto {
 
@@ -14,19 +15,4 @@ public class AssginRoleDto {
     @Schema(description = "角色id的List集合")
     private List<Long> roleIdList;
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public List<Long> getRoleIdList() {
-        return roleIdList;
-    }
-
-    public void setRoleIdList(List<Long> roleIdList) {
-        this.roleIdList = roleIdList;
-    }
 }

@@ -13,6 +13,8 @@ dependencies {
     implementation project(path: ':model')
     implementation project(path: ':common:service')
     implementation project(path: ':common:util')
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     implementation 'org.springframework.boot:spring-boot-starter-websocket:3.1.2'

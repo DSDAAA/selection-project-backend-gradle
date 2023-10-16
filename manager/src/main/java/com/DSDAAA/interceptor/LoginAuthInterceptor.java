@@ -13,54 +13,77 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.concurrent.TimeUnit;
 
+/**
+ * 登录验证拦截器：
+ *      每次请求，都需要拦截请求，获取请求token，判断token是否有效：
+ *          失效：重新登录
+ *          有效：更加token令牌从redis中获取用户信息，与当前线程进行绑定进行数据共享，重置token时间。
+ */
 @Component
 public class LoginAuthInterceptor implements HandlerInterceptor {
 
     @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    RedisTemplate<String,String> redisTemplate;
 
+    /**
+     * 前端发起请求，到达后端，拦截进行拦截。
+     * @param request current HTTP request
+     * @param response current HTTP response
+     * @param handler chosen handler to execute, for type and/or instance evaluation
+     * @return
+     * @throws Exception
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        //int i = 1/0;
+        StringBuffer requestURL = request.getRequestURL();
+        System.out.println("requestURL = " + requestURL);
 
-        // 获取请求方式
+        //0.如果是OPTIONS跨域预检请求，直接放行
         String method = request.getMethod();
-        if ("OPTIONS".equals(method)) {      // 如果是跨域预检请求，直接放行
-            return true;
+        if("OPTIONS".equals(method)){
+            return  true;
         }
 
-        // 获取token,没有就去登录。
+        //1.获取请求令牌
         String token = request.getHeader("token");
-        if (StrUtil.isEmpty(token)) {
-            responseNoLoginInfo(response);
+        if(StrUtil.isEmpty(token)){
+            //令牌为空，响应错误结果
+            responseNoLoginInfo(response) ;
             return false;
         }
 
-        // 如果token不为空，那么此时验证token的合法性
-        String sysUserInfoJson = redisTemplate.opsForValue().get(CacheConstant.USER_LOGIN_PREFIX + token);
-        if (StrUtil.isEmpty(sysUserInfoJson)) {
-            responseNoLoginInfo(response);
+        //2.判断令牌是否有效
+        String sysUserJsonString = redisTemplate.opsForValue().get(CacheConstant.USER_LOGIN_PREFIX + token);
+        if(StrUtil.isEmpty(sysUserJsonString)){
+            //令牌失效（30分钟已过），响应错误结果
+            responseNoLoginInfo(response) ;
             return false;
         }
 
-        // 将用户数据存储到ThreadLocal中
-        SysUser sysUser = JSON.parseObject(sysUserInfoJson, SysUser.class);
+        //3.获取用户信息
+        SysUser sysUser = JSON.parseObject(sysUserJsonString, SysUser.class);
+
+        //4.将用户信息与当前线程绑定
         AuthContextUtil.set(sysUser);
 
-        // 重置Redis中的用户数据的有效时间
-        redisTemplate.expire(CacheConstant.USER_LOGIN_PREFIX + token, 30, TimeUnit.MINUTES);
+        //5.重置redis用户令牌时间
+        // TODO  临时代码，上线需要改回来
+        //redisTemplate.expire(CacheConstant.USER_LOGIN_PREFIX + token,30, TimeUnit.MINUTES);
 
-        // 放行
+
+
+        //6.放行
         return true;
     }
 
-    //响应208状态码给前端
     private void responseNoLoginInfo(HttpServletResponse response) {
-        Result<Object> result = Result.build(null, ResultCodeEnum.LOGIN_AUTH);
+        Result result = Result.build(null, ResultCodeEnum.LOGIN_AUTH);
         PrintWriter writer = null;
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=utf-8");
@@ -74,8 +97,18 @@ public class LoginAuthInterceptor implements HandlerInterceptor {
         }
     }
 
+    /**
+     * 后端处理请求之后（执行过controller-service-dao），返回给前端结果时进行拦截：清理线程绑定数据
+     * @param request current HTTP request
+     * @param response current HTTP response
+     * @param handler the handlernthat started asynchronous
+     * execution, for type and/or instance examination
+     * @param modelAndView the {@code ModelAndView} that the handler returned
+     * (can also be {@code null})
+     * @throws Exception
+     */
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        AuthContextUtil.remove();  // 移除threadLocal中的数据
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        AuthContextUtil.remove();
     }
 }

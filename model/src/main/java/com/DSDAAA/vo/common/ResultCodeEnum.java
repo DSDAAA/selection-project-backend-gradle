@@ -1,4 +1,8 @@
 package com.DSDAAA.vo.common;
+
+import lombok.Getter;
+
+@Getter // 提供获取属性值的getter方法
 public enum ResultCodeEnum {
 
     SUCCESS(200 , "操作成功") ,
@@ -23,11 +27,4 @@ public enum ResultCodeEnum {
         this.message = message ;
     }
 
-    public Integer getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
 }

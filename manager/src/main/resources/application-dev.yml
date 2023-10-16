@@ -1,3 +1,4 @@
+# 配置服务端口号
 server:
   port: 8501
 
@@ -15,13 +16,20 @@ spring:
       host: 192.168.76.100
       port: 6379
       password: 1234
-
+  jackson:
+    time-zone: GMT+8
+  #date-format: yyyy-MM-dd HH:mm:ss
 # mybatis的配置
 mybatis:
   config-location: classpath:/mybatis-config.xml
   mapper-locations: classpath:/mapper/*/*.xml
+# 自定义配置
 spzx:
   auth:
     noAuthUrls:
       - /admin/system/index/login
       - /admin/system/index/generateValidateCode
+      - /doc.html
+      - /webjars/**
+      - /favicon.ico
+      - /v3/**

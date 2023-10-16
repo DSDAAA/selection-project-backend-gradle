@@ -1,7 +1,9 @@
 package com.DSDAAA.vo.common;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
+@Data
 @Schema(description = "响应结果实体类")
 public class Result<T> {
 
@@ -34,27 +36,4 @@ public class Result<T> {
         return build(body , resultCodeEnum.getCode() , resultCodeEnum.getMessage()) ;
     }
 
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
 }

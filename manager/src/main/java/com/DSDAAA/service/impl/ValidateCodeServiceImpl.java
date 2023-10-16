@@ -16,28 +16,29 @@ import java.util.concurrent.TimeUnit;
 public class ValidateCodeServiceImpl implements ValidateCodeService {
 
     @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    RedisTemplate<String,String> redisTemplate; //SpringBoot自动化配置
 
     @Override
     public ValidateCodeVo generateValidateCode() {
 
-        // 使用hutool工具包中的工具类生成图片验证码
-        //参数：宽  高  验证码位数 干扰线数量
-        CircleCaptcha circleCaptcha = CaptchaUtil.createCircleCaptcha(150, 48, 4, 2);
-        String codeValue = circleCaptcha.getCode();
+        //1.通过CaptchaUtil工具类生成验证码
+        //创建圆圈干扰的验证码 width – 图片宽 height – 图片高 codeCount – 字符个数 circleCount – 干扰圆圈条数
+        CircleCaptcha captcha = CaptchaUtil.createCircleCaptcha(150, 48, 4, 2);
+        String codeValue = captcha.getCode();
 
-        // 生成uuid作为图片验证码的key
-        String codeKey = UUID.randomUUID().toString().replace("-", "");
-        String codeImageBase64 = circleCaptcha.getImageBase64();
-        // 将验证码存储到Redis中
-        redisTemplate.opsForValue().set(CacheConstant.USER_LOGIN_VALIDATECODE_PREFIX + codeKey, codeValue, 5, TimeUnit.MINUTES);
+        //2.生成redis中存储验证码的codeKey
+        String codeKey =  UUID.randomUUID().toString().replace("-", "");
+        String codeImageBase64 = CacheConstant.USER_LOGIN_VALIDATECODE_IMAGE_PREFIX+captcha.getImageBase64();
 
-        // 构建响应结果数据
+        //3.将验证码保存redis中，便于登录请求，对验证码校验
+        //redisTemplate.opsForValue().set("user:login:validatecode:"+codeKey,codeValue,5, TimeUnit.MINUTES); //验证码5分钟有效
+        redisTemplate.opsForValue().set(CacheConstant.USER_LOGIN_VALIDATECODE_PREFIX +codeKey,codeValue,5, TimeUnit.MINUTES); //验证码5分钟有效
+
+        //封装后端生成验证码信息
         ValidateCodeVo validateCodeVo = new ValidateCodeVo();
-        validateCodeVo.setCodeKey(codeKey);
-        validateCodeVo.setCodeValue(CacheConstant.USER_LOGIN_VALIDTECODE_IMAGE_PREFIX + codeImageBase64);
+        validateCodeVo.setCodeKey(codeKey); //redis存在验证码key
+        validateCodeVo.setCodeValue(codeImageBase64); //base64编码字符串，带特殊前缀：前端<img src="">通过img标签回显图片
 
-        // 返回数据
         return validateCodeVo;
     }
 }

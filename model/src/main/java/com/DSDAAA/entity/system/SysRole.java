@@ -4,6 +4,10 @@ import com.DSDAAA.entity.base.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+/**
+ * 实体类：与表进行映射的类
+ */
+@Data
 @Schema(description = "角色实体类")
 public class SysRole extends BaseEntity {
 
@@ -18,36 +22,4 @@ public class SysRole extends BaseEntity {
     @Schema(description = "描述")
     private String description;
 
-    public SysRole(String roleName, String roleCode, String description) {
-        this.roleName = roleName;
-        this.roleCode = roleCode;
-        this.description = description;
-    }
-
-    public SysRole() {
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public String getRoleCode() {
-        return roleCode;
-    }
-
-    public void setRoleCode(String roleCode) {
-        this.roleCode = roleCode;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

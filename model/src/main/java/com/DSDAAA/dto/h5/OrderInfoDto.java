@@ -6,6 +6,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.util.List;
 
+@Data
 public class OrderInfoDto {
 
     //送货地址id
@@ -19,36 +20,4 @@ public class OrderInfoDto {
 
     //订单明细
     private List<OrderItem> orderItemList;
-
-    public Long getUserAddressId() {
-        return userAddressId;
-    }
-
-    public void setUserAddressId(Long userAddressId) {
-        this.userAddressId = userAddressId;
-    }
-
-    public BigDecimal getFeightFee() {
-        return feightFee;
-    }
-
-    public void setFeightFee(BigDecimal feightFee) {
-        this.feightFee = feightFee;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public List<OrderItem> getOrderItemList() {
-        return orderItemList;
-    }
-
-    public void setOrderItemList(List<OrderItem> orderItemList) {
-        this.orderItemList = orderItemList;
-    }
 }

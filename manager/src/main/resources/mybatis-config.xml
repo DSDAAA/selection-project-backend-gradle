@@ -10,7 +10,9 @@
         <setting name="logImpl" value="STDOUT_LOGGING"/>
     </settings>
     <plugins>
-        <!-- 分页插件 -->
+        <!--
+        pagehelper分页插件，拦截器会拦截select语句，如果代码中开启分页功能，自动在select语句后自动增加limit子句。
+        分页插件   limit ?,?-->
         <plugin interceptor="com.github.pagehelper.PageInterceptor"/>
     </plugins>
 </configuration>

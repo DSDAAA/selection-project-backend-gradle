@@ -34,7 +34,7 @@
 
     <!-- 文件日志 -->
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>${log.path}//log.log</file>
+        <file>${log.path}//spzx-manager.log</file>
         <append>true</append>
         <encoder>
             <pattern>%date{yyyy-MM-dd HH:mm:ss} %msg%n</pattern>

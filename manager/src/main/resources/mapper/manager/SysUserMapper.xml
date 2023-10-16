@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.DSDAAA.mapper.SysUserMapper">
+
+    <resultMap id="sysUserResultMap" type="com.DSDAAA.entity.system.SysUser" autoMapping="true"></resultMap>
+
+    <sql id="columns">
+        id, username, password, name, phone, avatar, description, status, create_time, update_time, is_deleted
+    </sql>
+
+    <select id="getSysUserByUserName" resultMap="sysUserResultMap">
+        select
+        <include refid="columns"></include>
+        from sys_user where username = #{userName}
+    </select>
+
+
+    <select id="findPage" resultMap="sysUserResultMap">
+        select
+        <include refid="columns"/>
+        from sys_user
+        <where>
+            <if test="keyword!=null and keyword!=''">
+                and (username like concat('%',#{keyword},'%') or name like concat('%',#{keyword},'%') or phone like
+                concat('%',#{keyword},'%'))
+            </if>
+            <if test="createTimeBegin!=null and createTimeBegin!=''">
+                and create_time >= #{createTimeBegin}
+            </if>
+            <if test="createTimeEnd!=null and createTimeEnd!=''">
+                and create_time &lt;= #{createTimeEnd}
+            </if>
+            and is_deleted = 0
+        </where>
+        order by id desc
+    </select>
+
+    <insert id="insert">
+        insert into sys_user(username, password, name, phone, avatar, description, status)
+        values (#{userName}, #{password}, #{name}, #{phone}, #{avatar}, #{description}, #{status})
+    </insert>
+
+    <update id="update">
+        update sys_user
+        set username=#{userName},
+            name=#{name},
+            phone=#{phone},
+            avatar=#{avatar},
+            description=#{description},
+            status=#{status}
+        where id = #{id}
+    </update>
+
+    <delete id="removeById">
+        update sys_user
+        set is_deleted=1
+        where id = #{id}
+    </delete>
+</mapper>

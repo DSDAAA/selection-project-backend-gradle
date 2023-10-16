@@ -10,9 +10,11 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.projectlombok:lombok:1.18.28'
     testImplementation platform('org.junit:junit-bom:5.9.1')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    implementation 'org.projectlombok:lombok:1.18.4'
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
     implementation 'com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter:4.3.0'
     implementation 'com.alibaba:easyexcel:3.1.1'
     implementation 'com.alibaba.fastjson2:fastjson2:2.0.21'

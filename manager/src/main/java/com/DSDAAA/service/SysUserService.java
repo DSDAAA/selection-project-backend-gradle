@@ -6,24 +6,20 @@ import com.DSDAAA.entity.system.SysUser;
 import com.DSDAAA.vo.system.LoginVo;
 import com.github.pagehelper.PageInfo;
 
-public interface SysUserService {
+import java.util.Map;
 
-    /**
-     * 根据用户名查询用户数据
-     *
-     * @return
-     */
+public interface SysUserService {
     LoginVo login(LoginDto loginDto);
 
-    SysUser getUserInfo(String token);
+    Map<String, String> getUserInfo(String token);
 
     void logout(String token);
 
-    PageInfo<SysUser> findByPage(SysUserDto sysUserDto, Integer pageNum, Integer pageSize);
+    PageInfo<SysUser> findPage(Integer pageNum, Integer pageSize, SysUserDto sysUserDto);
 
-    void saveSysUser(SysUser sysUser);
+    void save(SysUser sysUser);
 
-    void updateSysUser(SysUser sysUser);
+    void update(SysUser sysUser);
 
-    void deleteById(Long userId);
+    void removeById(Long id);
 }

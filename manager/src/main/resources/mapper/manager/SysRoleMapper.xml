@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.DSDAAA.mapper.SysRoleMapper">
+
+    <resultMap id="sysRoleResultMap" type="com.DSDAAA.entity.system.SysRole" autoMapping="true"></resultMap>
+
+    <sql id="columns">
+        id, role_name, role_code, description, create_time, update_time, is_deleted
+    </sql>
+
+    <select id="findPage" resultMap="sysRoleResultMap">
+        select
+        <include refid="columns"></include>
+        from sys_role
+        <where>
+            <if test="dto.roleName!=null and dto.roleName!=''">
+                and role_name like concat('%',#{dto.roleName},'%')
+            </if>
+            and is_deleted = 0
+        </where>
+        order by id desc
+    </select>
+
+    <insert id="insert">
+        insert into sys_role(role_name, role_code, description) value(#{roleName},#{roleCode},#{description})
+    </insert>
+
+    <update id="update">
+        update sys_role set role_name=#{roleName}, role_code=#{roleCode}, description=#{description} where id=#{id}
+    </update>
+
+    <delete id="removeById">
+        update sys_role set is_deleted=1 where id=#{id}
+    </delete>
+
+</mapper>

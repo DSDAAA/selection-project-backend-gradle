@@ -1,18 +1,20 @@
 package com.DSDAAA.mapper;
 
+
 import com.DSDAAA.dto.system.SysRoleDto;
 import com.DSDAAA.entity.system.SysRole;
 import org.apache.ibatis.annotations.Mapper;
-
-import java.util.List;
+import org.apache.ibatis.annotations.Param;
+import com.github.pagehelper.Page;
 
 @Mapper
 public interface SysRoleMapper {
-    List<SysRole> findByPage(SysRoleDto sysRoleDto);
 
-    void saveSysRole(SysRole sysRole);
+    Page<SysRole> findPage(@Param("dto") SysRoleDto sysRoleDto);
 
-    void updateSysRole(SysRole sysRole);
+    void insert(SysRole sysRole);
 
-    void deleteById(Long roleId);
+    void update(SysRole sysRole);
+
+    void removeById(Long id);
 }

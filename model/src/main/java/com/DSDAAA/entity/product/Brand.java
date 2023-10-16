@@ -1,6 +1,5 @@
 package com.DSDAAA.entity.product;
 
-
 import com.DSDAAA.entity.base.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

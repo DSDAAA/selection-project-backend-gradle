@@ -6,40 +6,42 @@ import com.DSDAAA.mapper.SysRoleMapper;
 import com.DSDAAA.service.SysRoleService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class SysRoleServiceImpl implements SysRoleService {
 
     @Autowired
-    private SysRoleMapper sysRoleMapper;
+    SysRoleMapper sysRoleMapper;
 
     @Override
-    public PageInfo<SysRole> findByPage(SysRoleDto sysRoleDto, Integer pageNum, Integer pageSize) {
+    public PageInfo<SysRole> findPage(Integer pageNum, Integer pageSize, SysRoleDto sysRoleDto) {
+        //1.开启分页功能
+        //底层，其实将分页信息封装Page对象，利用ThreadLocal绑定当前线程上。
         PageHelper.startPage(pageNum, pageSize);
-        List<SysRole> sysRoleList = sysRoleMapper.findByPage(sysRoleDto);
-        PageInfo<SysRole> pageInfo = new PageInfo(sysRoleList);
-        return pageInfo;
+
+        //2.分页查询
+        Page<SysRole> page = sysRoleMapper.findPage(sysRoleDto); //返回是Page对象   Page extends ArrayList
+        //return new PageInfo<>(page,5);
+        return new PageInfo<>(page); //默认导航页 8
     }
 
-    // com.atguigu.spzx.manager.service.impl.SysRoleServiceImpl
     @Override
-    public void saveSysRole(SysRole sysRole) {
-        sysRoleMapper.saveSysRole(sysRole);
+    public void save(SysRole sysRole) {
+        sysRoleMapper.insert(sysRole);
     }
 
-    // com.atguigu.spzx.manager.service.impl.SysRoleServiceImpl
     @Override
-    public void updateSysRole(SysRole sysRole) {
-        sysRoleMapper.updateSysRole(sysRole);
+    public void update(SysRole sysRole) {
+        sysRoleMapper.update(sysRole);
     }
 
-    // com.atguigu.spzx.manager.service.impl.SysRoleServiceImpl
     @Override
-    public void deleteById(Long roleId) {
-        sysRoleMapper.deleteById(roleId);
+    public void removeById(Long id) {
+        sysRoleMapper.removeById(id);
     }
 }

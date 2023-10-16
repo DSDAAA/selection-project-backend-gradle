@@ -2,29 +2,21 @@ package com.DSDAAA.mapper;
 
 import com.DSDAAA.dto.system.SysUserDto;
 import com.DSDAAA.entity.system.SysUser;
+import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
-
 @Mapper
+//@Repository
 public interface SysUserMapper {
-    /**
-     * 根据用户名查询用户数据
-     *
-     * @param userName
-     * @return
-     */
-    SysUser selectByUsername(String userName);
+    SysUser getSysUserByUserName(String userName);
 
-    List<SysUser> findByPage(SysUserDto sysUserDto);
 
-    SysUser findByUserName(String name);
 
-    void saveSysUser(SysUser sysUser);
+    Page<SysUser> findPage(SysUserDto sysUserDto);
 
-    // com.atguigu.spzx.manager.mapper.SysUserMapper
-    void updateSysUser(SysUser sysUser);
+    void insert(SysUser sysUser);
 
-    // com.atguigu.spzx.manager.mapper.SysUserMapper
-    void deleteById(Long userId);
+    void update(SysUser sysUser);
+
+    void removeById(Long id);
 }

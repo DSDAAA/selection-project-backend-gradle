@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+@Data
 @Schema(description = "购物车实体类")
 public class CartInfo extends BaseEntity {
 
@@ -32,59 +33,4 @@ public class CartInfo extends BaseEntity {
    @Schema(description = "isChecked")
    private Integer isChecked;
 
-   public Long getUserId() {
-      return userId;
-   }
-
-   public void setUserId(Long userId) {
-      this.userId = userId;
-   }
-
-   public Long getSkuId() {
-      return skuId;
-   }
-
-   public void setSkuId(Long skuId) {
-      this.skuId = skuId;
-   }
-
-   public BigDecimal getCartPrice() {
-      return cartPrice;
-   }
-
-   public void setCartPrice(BigDecimal cartPrice) {
-      this.cartPrice = cartPrice;
-   }
-
-   public Integer getSkuNum() {
-      return skuNum;
-   }
-
-   public void setSkuNum(Integer skuNum) {
-      this.skuNum = skuNum;
-   }
-
-   public String getImgUrl() {
-      return imgUrl;
-   }
-
-   public void setImgUrl(String imgUrl) {
-      this.imgUrl = imgUrl;
-   }
-
-   public String getSkuName() {
-      return skuName;
-   }
-
-   public void setSkuName(String skuName) {
-      this.skuName = skuName;
-   }
-
-   public Integer getIsChecked() {
-      return isChecked;
-   }
-
-   public void setIsChecked(Integer isChecked) {
-      this.isChecked = isChecked;
-   }
 }
